@@ -6,6 +6,12 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+@app.route('/basicAuth') 
+def basicAuthRouteHandler():
+  print(request.authorization["username"]) 
+  print(request.authorization["password"])
+  return "ok"
+
 @app.route('/auth', methods = ['POST'])
 def auth():
   # Issues access token
