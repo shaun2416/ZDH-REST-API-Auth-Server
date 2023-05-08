@@ -15,6 +15,7 @@ def generate_access_token():
   payload = {
     "iss": ISSUER,
     "exp": time.time() + LIFE_SPAN,
+    "scope": "read write delete"
   }
 
   access_token = jwt.encode(payload, private_key, algorithm = 'RS256')
