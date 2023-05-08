@@ -6,11 +6,31 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route('/basicAuth') 
+@app.route('/basicAuth', methods = ['POST']) 
 def basicAuthRouteHandler():
   print(request.authorization["username"]) 
   print(request.authorization["password"])
-  return "ok"
+
+  client_id = request.authorization["username"]
+  client_secret = request.authorization["password"]
+
+  if None in [client_id, client_secret]:
+    return json.dumps({
+      "error": "invalid_request"
+    }), 400
+  
+  if not authenticate_client(client_id, client_secret):
+    return json.dumps({
+      "error": "invalid_client"
+    }), 400
+
+  access_token = generate_access_token()
+  
+  return json.dumps({ 
+    "access_token": access_token,
+    "token_type": "JWT",
+    "expires_in": LIFE_SPAN
+  })
 
 @app.route('/auth', methods = ['POST'])
 def auth():
