@@ -13,6 +13,7 @@ def basicAuthRouteHandler():
 
   client_id = request.authorization["username"]
   client_secret = request.authorization["password"]
+  scope = request.form.get('scope') if request.form.get('scope') else "*"
 
   if None in [client_id, client_secret]:
     return json.dumps({
@@ -24,7 +25,7 @@ def basicAuthRouteHandler():
       "error": "invalid_client"
     }), 400
 
-  access_token = generate_access_token()
+  access_token = generate_access_token(scope)
   
   return json.dumps({ 
     "access_token": access_token,

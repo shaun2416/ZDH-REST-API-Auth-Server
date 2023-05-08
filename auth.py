@@ -11,11 +11,11 @@ with open('private.pem', 'rb') as f:
 def authenticate_client(client_id, client_secret):
   return True
 
-def generate_access_token():
+def generate_access_token(scope):
   payload = {
     "iss": ISSUER,
     "exp": time.time() + LIFE_SPAN,
-    "scope": "read write delete"
+    "scope": scope
   }
 
   access_token = jwt.encode(payload, private_key, algorithm = 'RS256')
