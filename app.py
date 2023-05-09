@@ -49,7 +49,8 @@ def auth():
       "error": "invalid_client"
     }), 400
 
-  access_token = generate_access_token()
+  scope = request.form.get('scope') if request.form.get('scope') else "*"
+  access_token = generate_access_token(scope)
   return json.dumps({ 
     "access_token": access_token,
     "token_type": "JWT",
